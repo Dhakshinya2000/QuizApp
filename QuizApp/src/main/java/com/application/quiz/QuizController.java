@@ -2,6 +2,8 @@ package com.application.quiz;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,8 +52,29 @@ public class QuizController {
 				+"</html>";
 				
 	}
-	
-	@RequestMapping("/viewQuiz")
+	@GetMapping("/admin/addQuiz")
+	public String addQuiz(@RequestBody Quiz q)
+	{
+		quizRepo.save(q);
+		return "Quiz Added Successfully";
+	}
+	@GetMapping("/admin/editQuiz")
+	public String editQuiz(@RequestBody Quiz q)
+	{
+		quizRepo.save(q);
+		return "Quiz Edited Successfully";
+	}
+	@GetMapping("/admin/deleteQuiz")
+	public String deleteQuiz(@RequestBody Quiz q)
+	{
+		quizRepo.delete(q);
+		return "Quiz Deleted Successfully";
+	}
+	@GetMapping("/user/viewQuiz")
+	public Iterable<Quiz> userQuiz()
+	{
+		return quizRepo.findAll();
+	}
 	public ModelAndView viewQuiz(Model m)
 	{
 		Iterable<Quiz> qlist = quizRepo.findAll();

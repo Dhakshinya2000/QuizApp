@@ -1,10 +1,12 @@
 package com.application.result;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +19,7 @@ public class ResultController {
 	@RequestMapping("/viewresult")
 	public ModelAndView viewres(Model m)
 	{
-		String username = "user1";
+		String username = "xyz";
 		List<Result> r = resultRepo.findByUsername(username);
 		m.addAttribute("results", r);
 		
@@ -42,5 +44,20 @@ public class ResultController {
 		m.addAttribute("results", res);
 		
 		return new ModelAndView("result");
+	}
+	@GetMapping("/admin/showresult")
+	public Iterable<Result> showresult()
+	{
+		return resultRepo.findAll();
+	}
+	@GetMapping("/user/saveresult")
+	public String saveresuser()
+	{
+		return "Answer Submitted";
+	}
+	@GetMapping("/user/viewresult")
+	public Iterable<Result> viewresult()
+	{
+		return resultRepo.findAll();
 	}
 }

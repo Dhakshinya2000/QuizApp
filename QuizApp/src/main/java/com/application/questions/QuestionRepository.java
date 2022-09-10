@@ -12,5 +12,7 @@ public interface QuestionRepository extends CrudRepository<Question, Integer>{
 
 	Question findByQuestionId(String questionid);
 
+	void deleteByQuestionId(String qid);
+
 
 }

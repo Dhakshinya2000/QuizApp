@@ -3,11 +3,14 @@ package com.application.admin;
 import java.util.List;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class AdminController {
@@ -64,5 +67,27 @@ public class AdminController {
  				+"</body>\n"
  				+"</html>";
 		
+	}
+	@GetMapping(value = "/adminloginapi")
+	public String adminloginapi(@RequestBody Admin a)
+	{
+		Admin ad = adminRepo.findByName(a.getName());
+		if(ad.getName().equals(a.getName()) && ad.getPassword().equals(a.getPassword()))
+		{
+			
+			String accessToken="Ad8cvBC/54ts3QbvL0f0EVmtw6/Jkhu712";
+			return "accessToken: "+accessToken;
+		}
+		return "Invalid Login";
+	}
+	@GetMapping(value = "/showadmin/{adminname}/{adminpass}")
+	public Admin adlogin(@PathVariable String adminname,@PathVariable String adminpass)
+	{
+		return adminRepo.findByName(adminname);
+	}
+	@GetMapping("/admin/logout")
+	public String adlogout()
+	{
+		return "Admin Logged Out";
 	}
 }

@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -96,5 +98,22 @@ public class QuestionController {
 				+"</form>\n"
 				+"</body>\n"
 				+"</html>";
+	}
+	@GetMapping("/admin/addQuestion")
+	public String addQuestion(@RequestBody Question q)
+	{
+		qRepo.save(q);
+		return "Question added successfully";
+	}
+	@GetMapping("/admin/deleteQuestion")
+	public String deleteQuestion(@RequestBody String qid)
+	{
+		qRepo.deleteByQuestionId(qid);
+		return "Question Deleted";
+	}
+	@GetMapping("/user/viewquestions/{quizid}")
+	public List<Question> viewques(@PathVariable int quizid)
+	{
+		return qRepo.findAllByQuizid(quizid);
 	}
 }

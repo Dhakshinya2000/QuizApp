@@ -4,6 +4,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,7 +63,11 @@ public class UserController {
  				+"</html>";
 		
 	}
-	
+	@GetMapping("/userlogin/{username}/{userpass}")
+	public User userloginapi(@PathVariable String username,@PathVariable String userpass)
+	{
+		return userRepo.findByName(username);
+	}
 	@GetMapping(value ={"/register","/addUser"})
 	public String newuser()
 	{
@@ -82,12 +88,37 @@ public class UserController {
 				+"</body>\n"
 				+"</html>";
 	}
-	
+	@GetMapping("/admin/registeruser")
+	public String registeruser(@RequestBody User u)
+	{
+		userRepo.save(u);
+		return "New user Added";
+	}
+	@GetMapping("/admin/showusers")
+	public Iterable<User> showusers()
+	{
+		return userRepo.findAll();
+	}
 	@GetMapping("/save")
 	public String saveUser(@RequestParam("username") String username,@RequestParam("userpassword") String userpassword)
 	{
 		User u = new User(username,userpassword);
 		userRepo.save(u);
 		return "<h1>User Added Successfully</h1>";
+	}
+	@GetMapping("/user/login")
+	public String userlogin(@RequestBody User us)
+	{
+		User u = userRepo.findByName(us.getName());
+ 		if(u.getName().equals(us.getName()) && u.getPassword().equals(us.getPassword()))
+ 		{
+ 			return "User Logged In";
+ 		}
+ 		return "Invalid User";
+	}
+	@GetMapping("/user/logout")
+	public String userlogout()
+	{
+		return "User Logged Out";
 	}
 }
